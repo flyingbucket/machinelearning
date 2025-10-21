@@ -1,4 +1,4 @@
-from LBP import LBP, LBPcython
+from LBP import LBP, LBPcython, LBPfunc
 import time
 import os
 import numpy as np
@@ -39,7 +39,7 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     if (H < 3) or (W < 3):
         raise ValueError("Image too small (<3x3) after padding")
 
-    # 实例
+    # 实例化类
     py_exec = LBP()
     cy_exec = LBPcython()  # 你已有的 Cython 封装类
 
@@ -71,16 +71,33 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
             hist_cy = _to_hist256(res)
     t_cy = sum(t_list) / len(t_list)
 
+    # ---- LBPfunc ----
+    t_list = []
+    hist_func = None
+    for _ in range(runs):
+        t0 = time.perf_counter()
+        res = LBPfunc(im_path, pad=pad, mode=mode)  # Direct function call
+        t1 = time.perf_counter()
+        t_list.append(t1 - t0)
+        if hist_func is None:
+            hist_func = _to_hist256(res)
+    t_func = sum(t_list) / len(t_list)
+
     # 校验
-    same_hist = np.array_equal(hist_py, hist_cy)
-    same_sum = int(hist_py.sum()) == int(hist_cy.sum()) == n_windows
+    same_hist = np.array_equal(hist_py, hist_cy) and np.array_equal(hist_py, hist_func)
+    same_sum = (
+        int(hist_py.sum()) == int(hist_cy.sum()) == int(hist_func.sum()) == n_windows
+    )
 
     # 吞吐量（窗口/秒、Mpx/s）
     tp_py = n_windows / t_py
     tp_cy = n_windows / t_cy
+    tp_func = n_windows / t_func
     mp_py = tp_py / 1e6
     mp_cy = tp_cy / 1e6
-    speedup = t_py / t_cy if t_cy > 0 else float("inf")
+    mp_func = tp_func / 1e6
+    speedup_cy = t_py / t_cy if t_cy > 0 else float("inf")
+    speedup_func = t_py / t_func if t_func > 0 else float("inf")
 
     print("\n=== LBP Performance ===")
     print(
@@ -89,7 +106,11 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     print(
         f"Cython  : {t_cy:.6f} s  | throughput: {tp_cy:,.0f} win/s ({mp_cy:.2f} Mpx/s)"
     )
-    print(f"Speedup : ×{speedup:.2f}")
+    print(
+        f"LBPfunc : {t_func:.6f} s  | throughput: {tp_func:,.0f} win/s ({mp_func:.2f} Mpx/s)"
+    )
+    print(f"Speedup (cy): ×{speedup_cy:.2f}")
+    print(f"Speedup (func): ×{speedup_func:.2f}")
     print(
         f"Hist equal: {same_hist}  | sum check: {same_sum} (sum_py={hist_py.sum()}, sum_cy={hist_cy.sum()})"
     )
@@ -108,6 +129,7 @@ if __name__ == "__main__":
     im_path = "./LBPtest_image.png"
     LBPExecutor = LBP()
     LBPcyExecutor = LBPcython()
+    LBPfuncExecutor = LBPfunc
 
     # 跑基准：可改 runs / 线程数
-    benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None)
+    benchmark_lbp(im_path, pad=1, mode="reflect", runs=2, set_threads=8)

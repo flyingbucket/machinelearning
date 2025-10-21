@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from collections import Counter
 from PIL import Image
 import lbp_cy
+import numba
 
 
 class LBP:
@@ -31,15 +32,33 @@ class LBP:
     ) -> Counter[int]:
         arr = LBP._read_img(imPath, pad, mode)
         h, w = arr.shape
-        # res = {}
-        # for x in range(h - 2):
-        #     for y in range(w - 2):
-        #         val = LBPkernel(arr, x, y)
-        #         res[val] = res.get(val, 0) + 1
         res = Counter(
             LBP.LBPkernel(arr, x, y) for x in range(h - 2) for y in range(w - 2)
         )
         return res
+
+
+def LBPfunc(imPath: str, pad: int = 1, mode: str = "reflect") -> Counter[int]:
+    im = Image.open(imPath).convert("L")
+    arr = np.array(im)
+    pad_width = ((pad, pad), (pad, pad))
+    arr = np.pad(arr, pad_width=pad_width, mode=mode)
+
+    def LBPkernel(im: np.ndarray, x, y) -> int:
+        h, w = im.shape
+        assert x + 2 < h and y + 2 < w, (
+            f"Index out of bound,please check padding. x:{x},y:{y},h:{h},w:{w}"
+        )
+        patch = im[x : x + 3, y : y + 3].copy()
+        patch = (patch >= patch[1, 1]).astype(np.uint8)
+        idxs = [0, 1, 2, 5, 8, 7, 6, 3]
+        bits = patch.reshape(-1)[idxs]
+        val = int("".join(map(str, bits)), 2)
+        return val
+
+    h, w = arr.shape
+    res = Counter(LBPkernel(arr, x, y) for x in range(h - 2) for y in range(w - 2))
+    return res
 
 
 class LBPcython:
@@ -63,7 +82,9 @@ if __name__ == "__main__":
     im_path = "./LBPtest_image.png"
     LBPExecutor = LBP()
     LBPcyExecutor = LBPcython()
-    res_dict = LBPcyExecutor(im_path)
+    # res_dict = LBPcyExecutor(im_path)
+    imarr = read_image(im_path)
+    res_dict = LBPfunc_numba(imarr)
 
     vals = list(res_dict.keys())
     counts = list(res_dict.values())

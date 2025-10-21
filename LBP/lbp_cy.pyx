@@ -12,7 +12,7 @@ def compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
     cdef int W = arr.shape[1]
     cdef cnp.uint8_t[:, :] A = arr  # typed memoryview 视图，零拷贝
 
-    # 预声明所有在循环体里要用的局部变量（很重要！）
+    # 预声明所有在循环体里要用的局部变量
     cdef int x, y, code
     cdef int tid, k, th, nthreads
     cdef cnp.uint8_t c, v
