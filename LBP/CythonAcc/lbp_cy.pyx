@@ -37,7 +37,7 @@ def compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
     H2 = hist2d  # 绑定为 memoryview，后续 nogil 安全
 
     # 主循环：注意 prange 块里的变量都是“先声明、后赋值”
-    for x in prange(0, H - 2, nogil=True, schedule='static'):
+    for x in prange(0, H - 2,2, nogil=True, schedule='static'):
         tid = omp_get_thread_num()
         # hist_local = H2[tid]  # 取该线程对应的 1×256 直方图
 
@@ -46,7 +46,7 @@ def compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
         # row1 = A[x+1, :]
         # row2 = A[x+2, :]
 
-        for y in range(0, W - 2):
+        for y in range(0, W - 2,2):
             c = A[x + 1, y + 1]
             code = 0
             v = A[x + dx[0], y + dy[0]]; code = (code << 1) | (1 if v >= c else 0)

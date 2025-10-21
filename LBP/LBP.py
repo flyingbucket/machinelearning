@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from collections import Counter
 from PIL import Image
-from liblocal.LBP import lbp_cy
+from liblocal import lbp_cy
 
 
 class LBP:
@@ -32,7 +32,9 @@ class LBP:
         arr = LBP._read_img(imPath, pad, mode)
         h, w = arr.shape
         res = Counter(
-            LBP.LBPkernel(arr, x, y) for x in range(h - 2) for y in range(w - 2)
+            LBP.LBPkernel(arr, x, y)
+            for x in range(0, h - 2, 2)
+            for y in range(0, w - 2, 2)
         )
         return res
 
@@ -56,7 +58,9 @@ def LBPfunc(imPath: str, pad: int = 1, mode: str = "reflect") -> Counter[int]:
         return val
 
     h, w = arr.shape
-    res = Counter(LBPkernel(arr, x, y) for x in range(h - 2) for y in range(w - 2))
+    res = Counter(
+        LBPkernel(arr, x, y) for x in range(0, h - 2, 2) for y in range(0, w - 2, 2)
+    )
     return res
 
 

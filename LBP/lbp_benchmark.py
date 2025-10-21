@@ -2,7 +2,7 @@ from LBP import LBP, LBPcython, LBPfunc
 import time
 import os
 import numpy as np
-from collections import Counter
+import argparse
 
 
 def _to_hist256(x):
@@ -30,7 +30,12 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     # 预读一次，拿到窗口数
     arr = LBP._read_img(im_path, pad=pad, mode=mode)
     H, W = arr.shape
-    n_windows = (H - 2) * (W - 2)
+    # n_windows = (H - 2) * (W - 2)
+
+    n_windows_height = (H - 3) // 2 + 1  # 高度方向上的窗口数
+    n_windows_width = (W - 3) // 2 + 1  # 宽度方向上的窗口数
+
+    n_windows = n_windows_height * n_windows_width  # 总窗口数
     megapixels = n_windows / 1e6
 
     print(
@@ -85,6 +90,8 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
 
     # 校验
     same_hist = np.array_equal(hist_py, hist_cy) and np.array_equal(hist_py, hist_func)
+
+    print(hist_py.dtype, hist_cy.dtype, hist_func.dtype)
     same_sum = (
         int(hist_py.sum()) == int(hist_cy.sum()) == int(hist_func.sum()) == n_windows
     )
@@ -112,7 +119,7 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     print(f"Speedup (cy): ×{speedup_cy:.2f}")
     print(f"Speedup (func): ×{speedup_func:.2f}")
     print(
-        f"Hist equal: {same_hist}  | sum check: {same_sum} (sum_py={hist_py.sum()}, sum_cy={hist_cy.sum()})"
+        f"Hist equal: {same_hist}  | sum check: {same_sum} (sum_py={hist_py.sum()}, sum_cy={hist_cy.sum()},sum_func={hist_func.sum()})"
     )
 
     # 若直方图不完全一致，打印前几个差异 bin 以便排查
@@ -126,10 +133,19 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
 
 
 if __name__ == "__main__":
-    im_path = "./LBPtest_image.png"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--im_path", type=str, default="./LBPtest_image.png")
+    parser.add_argument("--runs", type=int, default=5)
+    parser.add_argument("--num_threads", type=int, default=8)
+    args = parser.parse_args()
+
+    im_path = args.im_path
+    runs = args.runs
+    num_threads = args.num_threads
+
     LBPExecutor = LBP()
     LBPcyExecutor = LBPcython()
     LBPfuncExecutor = LBPfunc
 
     # 跑基准：可改 runs / 线程数
-    benchmark_lbp(im_path, pad=1, mode="reflect", runs=2, set_threads=8)
+    benchmark_lbp(im_path, pad=1, mode="reflect", runs=runs, set_threads=num_threads)
