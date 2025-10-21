@@ -2,8 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from collections import Counter
 from PIL import Image
-import lbp_cy
-import numba
+from liblocal.LBP import lbp_cy
 
 
 class LBP:
@@ -82,9 +81,7 @@ if __name__ == "__main__":
     im_path = "./LBPtest_image.png"
     LBPExecutor = LBP()
     LBPcyExecutor = LBPcython()
-    # res_dict = LBPcyExecutor(im_path)
-    imarr = read_image(im_path)
-    res_dict = LBPfunc_numba(imarr)
+    res_dict = LBPcyExecutor(im_path)
 
     vals = list(res_dict.keys())
     counts = list(res_dict.values())

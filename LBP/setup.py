@@ -1,4 +1,3 @@
-# setup.py
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 import numpy as np
@@ -8,11 +7,11 @@ link_args = ["-fopenmp"]
 
 ext = Extension(
     name="lbp_cy",
-    sources=["lbp_cy.pyx"],
+    sources=["./CythonAcc/lbp_cy.pyx"],
     include_dirs=[np.get_include()],
     extra_compile_args=compile_args,
     extra_link_args=link_args,
-    language="c++",
+    language="c",
 )
 
 setup(
