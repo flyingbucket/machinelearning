@@ -2,12 +2,14 @@
 import numpy as np
 cimport numpy as cnp
 from cython.parallel cimport prange
+from collections import Counter
+from PIL import Image
 
 cdef extern from "omp.h" nogil:
     int omp_get_thread_num()
     int omp_get_max_threads()
 
-def compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
+cpdef compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
     cdef int H = arr.shape[0]
     cdef int W = arr.shape[1]
     cdef cnp.uint8_t[:, :] A = arr  # typed memoryview 视图，零拷贝
@@ -67,3 +69,10 @@ def compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
             hist[k] += hist2d[th, k]
 
     return hist
+def LBPfunc_cython(imPath:str,pad: int = 1, mode: str = "reflect")->Counter[int]:
+    im = Image.open(imPath).convert("L")
+    arr = np.array(im)
+    padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)
+    hist_arr=compute_lbp_hist(padded)
+    res=Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
+    return res
