@@ -64,6 +64,8 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
         if hist_py is None:
             hist_py = _to_hist256(res)
     t_py = sum(t_list) / len(t_list)
+    print(f"Time py: {t_py}")
+    print(t_list)
 
     # ---- Cython LBP ----
     t_list = []
@@ -76,6 +78,8 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
         if hist_cy is None:
             hist_cy = _to_hist256(res)
     t_cy = sum(t_list) / len(t_list)
+    print(f"Time cy: {t_cy}")
+    print(t_list)
 
     # ---- LBPfunc ----
     t_list = []
@@ -88,6 +92,8 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
         if hist_func is None:
             hist_func = _to_hist256(res)
     t_func = sum(t_list) / len(t_list)
+    print(f"Time py func: {t_func}")
+    print(t_list)
 
     # ---- LBPfunc_cython ----
     t_list = []
@@ -100,6 +106,8 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
         if hist_func_cy is None:
             hist_func_cy = _to_hist256(res)
     t_func_cy = sum(t_list) / len(t_list)
+    print(f"Time cy func: {t_func_cy}")
+    print(t_list)
 
     # 校验
     same_hist = (
