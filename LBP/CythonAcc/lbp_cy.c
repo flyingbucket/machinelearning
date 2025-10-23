@@ -3384,9 +3384,9 @@ static const char __pyx_k_Index_out_of_bounds_axis_d[] = "Index out of bounds (a
 static const char __pyx_k_Step_may_not_be_zero_axis_d[] = "Step may not be zero (axis %d)";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
+static const char __pyx_k_e9F2DA_e1G81A_F_1_Rt1E_AU_gU_q[] = "\320\000\032\230$\230e\2409\250F\3202D\300A\330\004\t\210\025\210e\2201\220G\2308\2401\240A\330\004\n\210\"\210F\220!\2201\330\004\r\210R\210t\2201\220E\230\033\240A\240U\250'\260\025\260g\270U\300!\330\004\017\320\017\037\230q\240\001\330\004\n\210'\220\021\220!\2202\220X\230Q\230c\240\024\240U\250%\250q\260\005\260S\270\010\300\001\300\021\330\004\013\2101";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_F_1_F_1_q_at2Qe3a_at2Qe3a_at2Qe[] = "\200\001\330\004\021\220\023\220F\230!\2301\330\004\021\220\023\220F\230!\2301\330\004\037\230q\360\032\000\005\007\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\330\004\006\200a\200t\2102\210Q\210e\2203\220a\340\004\017\320\017\"\240!\330\0043\2602\260V\2702\270Z\300v\310V\320SU\320UV\330\004\t\210\021\360\006\000\t\024\2201\220C\220r\230\022\2302\230Q\330\010\016\320\016 \240\001\360\020\000\t\r\210E\220\025\220a\220s\230\"\230B\230b\240\001\330\014\020\220\001\220\021\220\"\220B\220c\230\022\2302\230Q\330\014\023\2201\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027\320PQ\330\014\020\220\001\220\021\220\"\220B\220b\230\001\230\024\230R\230r\240\022\2401\240E\250\030\260\025\260c\270\023\270C\270u\300B\300c\310\027""\320PQ\340\014\016\210a\210t\2207\230!\360\006\000\0052\260\022\2606\270\022\2707\300&\310\002\310!\330\004\010\210\006\210e\2201\220A\330\010\014\210E\220\025\220a\220q\330\014\020\220\001\220\026\220v\230Q\230d\240!\340\004\013\2101";
-static const char __pyx_k_e9F2DA_e1G81A_F_1_Rt1E_AU_gU_Qa[] = "\320\000\032\230$\230e\2409\250F\3202D\300A\330\004\t\210\025\210e\2201\220G\2308\2401\240A\330\004\n\210\"\210F\220!\2201\330\004\r\210R\210t\2201\220E\230\033\240A\240U\250'\260\025\260g\270U\300!\330\004\r\320\r\035\230Q\230a\330\004\010\210\007\210q\220\001\220\022\2208\2301\230C\230t\2405\250\005\250Q\250e\2603\260h\270a\270q\330\004\013\2101";
 static const char __pyx_k_All_dimensions_preceding_dimensi[] = "All dimensions preceding dimension %d must be indexed and not sliced";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
 static const char __pyx_k_Can_only_create_a_buffer_that_is[] = "Can only create a buffer that is contiguous in memory.";
@@ -19988,7 +19988,7 @@ static PyObject *__pyx_pf_6lbp_cy_2LBPfunc_cython(CYTHON_UNUSED PyObject *__pyx_
  *     im = Image.open(imPath).convert("L")
  *     arr = np.array(im)             # <<<<<<<<<<<<<<
  *     padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)
- *     hist_arr=compute_lbp_hist(padded)
+ *     hist_arr = compute_lbp_hist(padded)
 */
   __pyx_t_3 = NULL;
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
@@ -20023,8 +20023,8 @@ static PyObject *__pyx_pf_6lbp_cy_2LBPfunc_cython(CYTHON_UNUSED PyObject *__pyx_
  *     im = Image.open(imPath).convert("L")
  *     arr = np.array(im)
  *     padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)             # <<<<<<<<<<<<<<
- *     hist_arr=compute_lbp_hist(padded)
- *     res=Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
+ *     hist_arr = compute_lbp_hist(padded)
+ *     res = Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
 */
   __pyx_t_6 = NULL;
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
@@ -20088,8 +20088,8 @@ static PyObject *__pyx_pf_6lbp_cy_2LBPfunc_cython(CYTHON_UNUSED PyObject *__pyx_
   /* "lbp_cy.pyx":76
  *     arr = np.array(im)
  *     padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)
- *     hist_arr=compute_lbp_hist(padded)             # <<<<<<<<<<<<<<
- *     res=Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
+ *     hist_arr = compute_lbp_hist(padded)             # <<<<<<<<<<<<<<
+ *     res = Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
  *     return res
 */
   if (!(likely(((__pyx_v_padded) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_padded, __pyx_mstate_global->__pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 76, __pyx_L1_error)
@@ -20100,8 +20100,8 @@ static PyObject *__pyx_pf_6lbp_cy_2LBPfunc_cython(CYTHON_UNUSED PyObject *__pyx_
 
   /* "lbp_cy.pyx":77
  *     padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)
- *     hist_arr=compute_lbp_hist(padded)
- *     res=Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})             # <<<<<<<<<<<<<<
+ *     hist_arr = compute_lbp_hist(padded)
+ *     res = Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})             # <<<<<<<<<<<<<<
  *     return res
 */
   __pyx_t_2 = NULL;
@@ -20152,8 +20152,8 @@ static PyObject *__pyx_pf_6lbp_cy_2LBPfunc_cython(CYTHON_UNUSED PyObject *__pyx_
   __pyx_t_1 = 0;
 
   /* "lbp_cy.pyx":78
- *     hist_arr=compute_lbp_hist(padded)
- *     res=Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
+ *     hist_arr = compute_lbp_hist(padded)
+ *     res = Counter({i:hist_arr[i] for i in range(256) if hist_arr[i]})
  *     return res             # <<<<<<<<<<<<<<
 */
   __Pyx_XDECREF(__pyx_r);
@@ -22716,7 +22716,7 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   {
     const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 9, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 72, 121};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_imPath, __pyx_mstate->__pyx_n_u_pad, __pyx_mstate->__pyx_n_u_mode, __pyx_mstate->__pyx_n_u_im, __pyx_mstate->__pyx_n_u_arr, __pyx_mstate->__pyx_n_u_padded, __pyx_mstate->__pyx_n_u_hist_arr, __pyx_mstate->__pyx_n_u_res, __pyx_mstate->__pyx_n_u_i};
-    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_CythonAcc_lbp_cy_pyx, __pyx_mstate->__pyx_n_u_LBPfunc_cython, __pyx_k_e9F2DA_e1G81A_F_1_Rt1E_AU_gU_Qa, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_CythonAcc_lbp_cy_pyx, __pyx_mstate->__pyx_n_u_LBPfunc_cython, __pyx_k_e9F2DA_e1G81A_F_1_Rt1E_AU_gU_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
   }
   Py_DECREF(tuple_dedup_map);
   return 0;

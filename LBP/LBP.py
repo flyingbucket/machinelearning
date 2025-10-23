@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from collections import Counter
 from PIL import Image
 from liblocal.lbp_cy import LBPfunc_cython, compute_lbp_hist
+from skimage import feature
 
 
 class LBP:
@@ -77,8 +78,17 @@ class LBPcython:
     ) -> Counter[int]:
         arr = LBP._read_img(imPath, pad, mode).astype(np.uint8, copy=False)
         hist = compute_lbp_hist(arr)  # ndarray shape=(256,), dtype=int64
-        # 转 Counter（非零项）
         return Counter({i: int(hist[i]) for i in range(256) if hist[i]})
+
+
+def LBPskimage(imPath, pad=1, mode="reflect"):
+    im = Image.open(imPath).convert("L")
+    arr = np.array(im)
+    padded = np.pad(arr, pad_width=((pad, pad), (pad, pad)), mode=mode)
+    lbp = feature.local_binary_pattern(padded, P=8, R=1, method="default")
+    lbp_flat = lbp.ravel().astype(int)
+    lbp_hist = Counter(lbp_flat)
+    return lbp_hist
 
 
 if __name__ == "__main__":

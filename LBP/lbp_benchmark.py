@@ -1,4 +1,4 @@
-from LBP import LBP, LBPcython, LBPfunc
+from LBP import LBP, LBPcython, LBPfunc, LBPskimage
 from liblocal.lbp_cy import LBPfunc_cython
 import time
 import os
@@ -65,7 +65,6 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
             hist_py = _to_hist256(res)
     t_py = sum(t_list) / len(t_list)
     print(f"Time py: {t_py}")
-    print(t_list)
 
     # ---- Cython LBP ----
     t_list = []
@@ -79,7 +78,6 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
             hist_cy = _to_hist256(res)
     t_cy = sum(t_list) / len(t_list)
     print(f"Time cy: {t_cy}")
-    print(t_list)
 
     # ---- LBPfunc ----
     t_list = []
@@ -93,7 +91,6 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
             hist_func = _to_hist256(res)
     t_func = sum(t_list) / len(t_list)
     print(f"Time py func: {t_func}")
-    print(t_list)
 
     # ---- LBPfunc_cython ----
     t_list = []
@@ -107,7 +104,19 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
             hist_func_cy = _to_hist256(res)
     t_func_cy = sum(t_list) / len(t_list)
     print(f"Time cy func: {t_func_cy}")
-    print(t_list)
+
+    # ---- LBPskimage ----
+    t_list = []
+    hist_skimage = None
+    for _ in range(runs):
+        t0 = time.perf_counter()
+        res = LBPskimage(im_path)  # Direct function call
+        t1 = time.perf_counter()
+        t_list.append(t1 - t0)
+        if hist_skimage is None:
+            hist_skimage = _to_hist256(res)
+    t_skimage = sum(t_list) / len(t_list)
+    print(f"Time skimage: {t_skimage}")
 
     # 校验
     same_hist = (
@@ -129,14 +138,17 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     tp_cy = n_windows / t_cy
     tp_func = n_windows / t_func
     tp_func_cy = n_windows / t_func_cy
+    tp_skimage = n_windows / t_skimage
     mp_py = tp_py / 1e6
     mp_cy = tp_cy / 1e6
     mp_func = tp_func / 1e6
     mp_func_cy = tp_func_cy / 1e6
+    mp_skimage = tp_skimage / 1e6
 
     speedup_cy = t_py / t_cy if t_cy > 0 else float("inf")
     speedup_func = t_py / t_func if t_func > 0 else float("inf")
     speedup_func_cy = t_py / t_func_cy if t_func_cy > 0 else float("inf")
+    speedup_skimage = t_py / t_skimage if t_skimage > 0 else float("inf")
 
     print("\n=== LBP Performance ===")
     print(
@@ -151,9 +163,13 @@ def benchmark_lbp(im_path, pad=1, mode="reflect", runs=5, set_threads=None):
     print(
         f"LBPfunc_cython : {t_func_cy:.6f} s  | throughput: {tp_func_cy:,.0f} win/s ({mp_func_cy:.2f} Mpx/s)"
     )
+    print(
+        f"LBPskimage : {t_skimage:.6f} s  | throughput: {tp_skimage:,.0f} win/s ({mp_skimage:.2f} Mpx/s)"
+    )
     print(f"Speedup (cy): ×{speedup_cy:.2f}")
     print(f"Speedup (func): ×{speedup_func:.2f}")
     print(f"Speedup (cython func): ×{speedup_func_cy:.2f}")
+    print(f"Speedup (skimage): ×{speedup_skimage:.2f}")
     print(
         f"Hist equal: {same_hist}  | sum check: {same_sum} (sum_py={hist_py.sum()}, sum_cy={hist_cy.sum()},sum_func={hist_func.sum()})"
     )
