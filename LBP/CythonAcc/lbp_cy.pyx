@@ -38,7 +38,7 @@ cpdef compute_lbp_hist(cnp.ndarray[cnp.uint8_t, ndim=2] arr):
     cdef cnp.ndarray[cnp.int64_t, ndim=2] hist2d = np.zeros((nthreads, 256), dtype=np.int64)
     H2 = hist2d  # 绑定为 memoryview，后续 nogil 安全
 
-    # 主循环：注意 prange 块里的变量都是“先声明、后赋值”
+    # cython prange 块里的变量都是“先声明、后赋值”
     for x in prange(0, H - 2,2, nogil=True, schedule='static'):
         tid = omp_get_thread_num()
         for y in range(0, W - 2,2):

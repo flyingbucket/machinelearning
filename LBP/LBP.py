@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 from matplotlib import pyplot as plt
 from collections import Counter
 from PIL import Image
@@ -91,19 +92,58 @@ def LBPskimage(imPath, pad=1, mode="reflect"):
     return lbp_hist
 
 
-if __name__ == "__main__":
-    im_path = "./LBPtest_image.png"
-    LBPExecutor = LBP()
+def walk_dir(root_dir: str, out_dir: str = "EX1/outputs"):
+    root = Path(root_dir)
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+
     LBPcyExecutor = LBPcython()
-    # res_dict = LBPcyExecutor(im_path)
-    res_dict = LBPfunc_cython(im_path)
+    # LBPcyExecutor = LBP()
 
-    vals = list(res_dict.keys())
-    counts = list(res_dict.values())
+    for class_dir in sorted([p for p in root.iterdir() if p.is_dir()]):
+        hist_list = []
+        img_names = []
+        all_codes = set()
 
-    fig, ax = plt.subplots()
-    ax.bar(vals, counts, width=1.0)
-    ax.set_xlabel("LBP code")
-    ax.set_ylabel("Frequency")
-    ax.set_title("LBP Histogram")
-    plt.show()
+        for img_path in sorted(class_dir.iterdir()):
+            try:
+                res_dict = LBPcyExecutor(str(img_path))  # {code: count}
+                if not isinstance(res_dict, dict) or len(res_dict) == 0:
+                    print(f"[WARN] 空直方图：{img_path}")
+                    continue
+                hist_list.append(res_dict)
+                img_names.append(img_path.stem)
+                all_codes.update(res_dict.keys())
+            except Exception as e:
+                print(f"[WARN] 处理失败: {img_path} -> {e}")
+
+        if not hist_list:
+            print(f"[INFO] 跳过空目录：{class_dir}")
+            continue
+
+        codes = sorted(all_codes)  # 所有出现过的 LBP code
+        X = []  # 每张图对齐后的频率向量
+
+        for h in hist_list:
+            vec = np.array([h.get(c, 0) for c in codes], dtype=np.float64)
+            X.append(vec)
+
+        plt.figure(figsize=(10, 6))
+        for vec, name in zip(X, img_names):
+            plt.plot(codes, vec, linewidth=1.2, alpha=0.85, label=name)
+
+        plt.xlabel("LBP code")
+        plt.ylabel("count")
+        plt.title(f"LBP feature curves - {class_dir.name}")
+        plt.legend(ncol=2, fontsize=9, loc="best")
+        plt.tight_layout()
+
+        save_path = out / f"{class_dir.name}_lbp_curves.png"
+        plt.savefig(save_path, dpi=160)
+        plt.close()
+        print(f"[OK] Saved: {save_path}")
+
+
+if __name__ == "__main__":
+    dir = "./EX1/data"
+    walk_dir(dir)
