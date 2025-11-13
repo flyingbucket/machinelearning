@@ -3,6 +3,7 @@ build
 *.so
 *.bin
 
+.vscode/
 *tar
 *tar.gz
 *zip
