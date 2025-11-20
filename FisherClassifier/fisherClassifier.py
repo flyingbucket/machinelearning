@@ -3,7 +3,8 @@
 import scipy
 import numpy as np
 from sklearn.datasets import load_breast_cancer
-from typing import List,Tuple
+from typing import List, Tuple
+
 
 def get_Sw(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     """Coumpute Within-Class Scatter Matrix"""
@@ -70,18 +71,20 @@ def train_fisher_classifier(X: np.ndarray, y: np.ndarray):
     labels = np.unique(y)
     meanProjections = []
     for label in labels:
-        meanProjections.append((label,np.mean(projections[y == label])))
-    sortedMeans = sorted(meanProjections,key=lambda x: x[1])
-    thresholds=[]
-    for i in range(len(sortedMeans)-1):
-        meanPrev=sortedMeans[i][1]
-        meanPost=sortedMeans[i+1][1]
-        thresholds.append((meanPrev+meanPost)/2)
+        meanProjections.append((label, np.mean(projections[y == label])))
+    sortedMeans = sorted(meanProjections, key=lambda x: x[1])
+    thresholds = []
+    for i in range(len(sortedMeans) - 1):
+        meanPrev = sortedMeans[i][1]
+        meanPost = sortedMeans[i + 1][1]
+        thresholds.append((meanPrev + meanPost) / 2)
 
-    return w,thresholds,sortedMeans
+    return w, thresholds, sortedMeans
 
 
-def predict_fisher_classifier(X: np.ndarray, w: np.ndarray, thresholds: list,sortedMeans:List[Tuple[int,float]]) -> np.ndarray:
+def predict_fisher_classifier(
+    X: np.ndarray, w: np.ndarray, thresholds: list, sortedMeans: List[Tuple[int, float]]
+) -> np.ndarray:
     """Predict using Fisher Classifier"""
     projections = X @ w
     y_pred = np.zeros(projections.shape[0])
@@ -95,26 +98,38 @@ def predict_fisher_classifier(X: np.ndarray, w: np.ndarray, thresholds: list,sor
             y_pred[i] = labels[-1]
     return y_pred
 
+
 def evaluate_classifier(y_true: np.ndarray, y_pred: np.ndarray):
-    """Evaluate Classifier Accuracy"""
+    """Evaluate Classifier Accuracy and Confusion Matrix"""
     accuracy = np.mean(y_true == y_pred)
-    return accuracy
 
+    # Compute confusion matrix
+    labels = np.unique(y_true)
+    n_classes = len(labels)
+    confusion = np.zeros((n_classes, n_classes), dtype=int)
 
+    # Fill confusion matrix
+    for t, p in zip(y_true, y_pred):
+        true_index = np.where(labels == t)[0][0]
+        pred_index = np.where(labels == p)[0][0]
+        confusion[true_index, pred_index] += 1
+
+    return accuracy, confusion
 
 
 if __name__ == "__main__":
     np.random.seed(42)
-    
+
     data = load_breast_cancer()
     X = data["data"]
     y = data["target"]
 
     X_train, y_train, X_test, y_test = split_data(X, y)
 
-    w,thresholds,sortedMeans = train_fisher_classifier(X_train, y_train)
+    w, thresholds, sortedMeans = train_fisher_classifier(X_train, y_train)
 
-    y_pred = predict_fisher_classifier(X_test, w, thresholds,sortedMeans)
+    y_pred = predict_fisher_classifier(X_test, w, thresholds, sortedMeans)
 
-    accuracy = evaluate_classifier(y_test, y_pred)
+    accuracy, confusion = evaluate_classifier(y_test, y_pred)
     print(f"Fisher Classifier Accuracy: {accuracy * 100:.2f}%")
+    print("Confusion Matrix:\n", confusion)
